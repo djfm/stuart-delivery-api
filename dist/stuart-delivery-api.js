@@ -5380,19 +5380,15 @@
 	    }
 
 	    _createClass(StuartDeliveryClient, [{
-	        key: 'endPoint',
-	        value: function endPoint() {
-	            for (var _len = arguments.length, path = Array(_len), _key = 0; _key < _len; _key++) {
-	                path[_key] = arguments[_key];
-	            }
-
-	            return _urlJoin2.default.apply(undefined, [constants.endpoint].concat(path));
+	        key: 'processRequest',
+	        value: function processRequest(method, endpoint, payload) {
+	            return new Promise(function (resolve, reject) {
+	                _superagent2.default[method.toLowerCase()]((0, _urlJoin2.default)(constants.endpoint, endpoint)).send(payload).end(handleResponse(resolve, reject));
+	            });
 	        }
 	    }, {
 	        key: 'getPlace',
 	        value: function getPlace(placeType, _ref2) {
-	            var _this = this;
-
 	            var city = _ref2.city;
 	            var addressLatitude = _ref2.addressLatitude;
 	            var addressLongitude = _ref2.addressLongitude;
@@ -5400,31 +5396,28 @@
 	            var addressPostcode = _ref2.addressPostcode;
 	            var comment = _ref2.comment;
 
-	            return new Promise(function (resolve, reject) {
-	                var addressCityId = constants.cityId[city];
+	            var addressCityId = constants.cityId[city];
 
-	                if (undefined === addressCityId) {
-	                    reject(new Error('Unknown city "' + city + '".'));
-	                    return;
-	                }
+	            if (undefined === addressCityId) {
+	                return Promise.reject(new Error('Unknown city "' + city + '".'));
+	            }
 
-	                var requestData = {
-	                    clientId: _this._clientId,
-	                    addressCityId: addressCityId,
-	                    placeTypeId: constants.placeTypeId[placeType],
-	                    comment: comment
-	                };
+	            var requestData = {
+	                clientId: this._clientId,
+	                addressCityId: addressCityId,
+	                placeTypeId: constants.placeTypeId[placeType],
+	                comment: comment
+	            };
 
-	                if (addressStreet) {
-	                    requestData.addressStreet = addressStreet;
-	                    requestData.addressPostcode = addressPostcode;
-	                } else {
-	                    requestData.addressLatitude = addressLatitude;
-	                    requestData.addressLongitude = addressLongitude;
-	                }
+	            if (addressStreet) {
+	                requestData.addressStreet = addressStreet;
+	                requestData.addressPostcode = addressPostcode;
+	            } else {
+	                requestData.addressLatitude = addressLatitude;
+	                requestData.addressLongitude = addressLongitude;
+	            }
 
-	                _superagent2.default.post(_this.endPoint('/v1/places')).send(requestData).end(handleResponse(resolve, reject));
-	            });
+	            return this.processRequest('POST', '/v1/places', requestData);
 	        }
 	    }, {
 	        key: 'getOriginPlace',

@@ -5372,14 +5372,14 @@
 	    };
 	};
 
-	var StuardDeliveryClient = (function () {
-	    function StuardDeliveryClient() {
-	        _classCallCheck(this, StuardDeliveryClient);
+	var StuartDeliveryClient = (function () {
+	    function StuartDeliveryClient() {
+	        _classCallCheck(this, StuartDeliveryClient);
 
 	        this._clientId = 3;
 	    }
 
-	    _createClass(StuardDeliveryClient, [{
+	    _createClass(StuartDeliveryClient, [{
 	        key: 'endPoint',
 	        value: function endPoint() {
 	            for (var _len = arguments.length, path = Array(_len), _key = 0; _key < _len; _key++) {
@@ -5438,10 +5438,10 @@
 	        }
 	    }]);
 
-	    return StuardDeliveryClient;
+	    return StuartDeliveryClient;
 	})();
 
-	exports.default = StuardDeliveryClient;
+	exports.default = StuartDeliveryClient;
 
 /***/ },
 /* 192 */,
